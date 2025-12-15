@@ -1,11 +1,15 @@
 package com.todoapp.services.impl;
 
+import com.todoapp.dto.DtoNote;
+import com.todoapp.dto.DtoNoteIU;
 import com.todoapp.entity.Note;
 import com.todoapp.repository.NoteRepository;
 import com.todoapp.services.INoteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,43 +20,56 @@ public class NoteServiceImpl implements INoteService {
     private NoteRepository noteRepository;
 
     @Override
-    public List<Note> getAllNotes(Note note) {
-       return noteRepository.findAll();
+    public List<DtoNote> getAllNotes() {
+       List<DtoNote> dtoList = new ArrayList<>();
+       List<Note> noteList = noteRepository.findAll();
+
+       for (Note note : noteList){
+           DtoNote dto = new DtoNote();
+           BeanUtils.copyProperties(note,dto);
+           dtoList.add(dto);
+       }
+       return dtoList;
     }
 
     @Override
-    public Note addNote(Note note) {
-        if (note != null) {
+    public DtoNote addNote(DtoNoteIU dtoNoteIU) {
+        DtoNote response = new DtoNote();
+        Note note = new Note();
 
-            return noteRepository.save(note);
-        }
-        return null;
+        BeanUtils.copyProperties(dtoNoteIU,note);
+        Note dbNote = noteRepository.save(note);
+        BeanUtils.copyProperties(dbNote,response);
+        return response;
     }
 
     @Override
-    public Note findNoteById(Integer id) {
+    public DtoNote findNoteById(Integer id) {
+        DtoNote newDto = new DtoNote();
         Optional<Note> optional = noteRepository.findById(id);
-        return optional.orElse(null);
+        optional.ifPresent(dbNote -> BeanUtils.copyProperties(dbNote, newDto));
+        return newDto;
     }
 
     @Override
-    public Note updateNote(Integer id, Note updateNote) {
-        Note dbNote = findNoteById(id);
-        if (dbNote != null) {
-            dbNote.setTitle(updateNote.getTitle());
-            dbNote.setContent(updateNote.getContent());
-            dbNote.setCreationDate(updateNote.getCreationDate());
+    public DtoNote updateNote(Integer id, DtoNoteIU updateNoteIU) {
+        DtoNote dto = new DtoNote();
+        Optional<Note> optional =  noteRepository.findById(id);
+        if (optional.isPresent()) {
+            Note dbNote = optional.get();
+            dbNote.setTitle(updateNoteIU.getTitle());
+            dbNote.setContent(updateNoteIU.getContent());
 
-            return noteRepository.save(dbNote);
+            Note updatedNote = noteRepository.save(dbNote);
+            BeanUtils.copyProperties(updatedNote,dto);
+            return dto;
         }
         return null;
     }
 
     @Override
     public void deleteNote(Integer id) {
-        Note dbNote = findNoteById(id);
-        if (dbNote != null){
-            noteRepository.delete(dbNote);
-        }
-    }
+        Optional<Note> optional =  noteRepository.findById(id);
+        optional.ifPresent(note -> noteRepository.delete(note));
+   }
 }

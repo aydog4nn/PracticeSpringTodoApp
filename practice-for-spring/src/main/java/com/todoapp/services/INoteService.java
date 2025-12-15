@@ -1,20 +1,22 @@
 package com.todoapp.services;
 
+import com.todoapp.dto.DtoNote;
+import com.todoapp.dto.DtoNoteIU;
 import com.todoapp.entity.Note;
 
 import java.util.List;
 
 public interface INoteService {
 
-    public List<Note> getAllNotes(Note note);
+    public List<DtoNote> getAllNotes();
 
-    public Note addNote(Note note);
+    public DtoNote addNote(DtoNoteIU dtoNoteIU);
 
     public void deleteNote(Integer id);
 
-    public Note findNoteById(Integer id);
+    public DtoNote findNoteById(Integer id);
 
-    public Note updateNote(Integer id,Note updateNote);
+    public DtoNote updateNote(Integer id,DtoNoteIU updateNoteIU);
 
 
 }

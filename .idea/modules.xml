@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PracticeSpringTodoApp.iml" filepath="$PROJECT_DIR$/.idea/PracticeSpringTodoApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/practice-for-spring/practice-for-spring.iml" filepath="$PROJECT_DIR$/practice-for-spring/practice-for-spring.iml" />
+    </modules>
+  </component>
+</project>
