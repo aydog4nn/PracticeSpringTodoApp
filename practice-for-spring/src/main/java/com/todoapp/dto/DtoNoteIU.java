@@ -16,7 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class DtoNoteIU {
 
-    @NotEmpty(message = "Bu alan boş bırakılamaz..")
     @Size(min = 5,max = 20)
     private String title;
 
