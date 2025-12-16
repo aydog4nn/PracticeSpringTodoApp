@@ -3,8 +3,8 @@ package com.todoapp.controller.impl;
 import com.todoapp.controller.INoteController;
 import com.todoapp.dto.DtoNote;
 import com.todoapp.dto.DtoNoteIU;
-import com.todoapp.entity.Note;
 import com.todoapp.services.INoteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class NoteControllerImpl implements INoteController {
 
     @PostMapping(path = "/add-note")
     @Override
-    public DtoNote addNote(@RequestBody DtoNoteIU dtoNoteIU) {
+    public DtoNote addNote(@RequestBody @Valid DtoNoteIU dtoNoteIU) {
         return noteService.addNote(dtoNoteIU);
     }
 
