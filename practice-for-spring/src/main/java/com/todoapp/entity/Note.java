@@ -2,6 +2,7 @@ package com.todoapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -32,6 +33,8 @@ public class Note {
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date creationDate;
+
+
 
 
 

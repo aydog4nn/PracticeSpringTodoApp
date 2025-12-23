@@ -26,8 +26,7 @@ public class DtoNoteIU {
 
     private Date creationDate;
 
-    @NotEmpty(message = "Email doldurulmalıdır.")
-    @Email(message = "email formatında girin!")
-    private String email;
+
+
 
 }
