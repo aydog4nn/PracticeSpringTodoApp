@@ -1,7 +1,9 @@
 package com.todoapp.services.impl;
 
+import com.todoapp.dto.DtoCourse;
 import com.todoapp.dto.DtoNote;
 import com.todoapp.dto.DtoNoteIU;
+import com.todoapp.entity.Course;
 import com.todoapp.entity.Note;
 import com.todoapp.repository.NoteRepository;
 import com.todoapp.services.INoteService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 
 @Service
@@ -46,11 +49,27 @@ public class NoteServiceImpl implements INoteService {
 
     @Override
     public DtoNote findNoteById(Integer id) {
-        DtoNote newDto = new DtoNote();
-        Optional<Note> optional = noteRepository.findById(id);
-        optional.ifPresent(dbNote -> BeanUtils.copyProperties(dbNote, newDto));
-        return newDto;
+       DtoNote dtoNote = new DtoNote();
+       Optional<Note> optional  = noteRepository.findById(id);
+       if (optional.isEmpty()) {
+           return null;
+       }
+
+       Note dbNote  = optional.get();
+       BeanUtils.copyProperties(dbNote,dtoNote);
+
+       if (dbNote.getCourses()!= null && !dbNote.getCourses().isEmpty()) {
+           for (Course course : dbNote.getCourses()) {
+               DtoCourse dtoCourse = new DtoCourse();
+               BeanUtils.copyProperties(course, dtoCourse);
+
+               dtoNote.getCourses().add(dtoCourse);
+
+           }
+       }
+       return dtoNote;
     }
+
 
     @Override
     public DtoNote updateNote(Integer id, DtoNoteIU updateNoteIU) {
